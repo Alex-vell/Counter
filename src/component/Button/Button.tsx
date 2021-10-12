@@ -1,28 +1,28 @@
-import React, {MouseEventHandler} from 'react'
-import s from './../Counter.module.css'
+import React, {ButtonHTMLAttributes, DetailedHTMLProps} from 'react'
 
-type ButtonPropsType = {
-    incCountCallback: (count: number, stepNumber: number) => void
-    resetCountCallback: (count: number, startValue: number) => void
-    buttonInc: string
-    buttonReset: string
-    disabledInc: boolean
-    disabledReset: boolean
-    stepNumber: number
-    count: number
-    startValue: number
+
+type DefaultButtonPropsType = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
+
+type ButtonPropsType = DefaultButtonPropsType & {
+    incCountCallback?: (count: number, stepNumber: number) => void
+    resetCountCallback?: (count: number, startValue: number) => void
+    saveValueCallback?: () => void
+    buttonInc?: string
+    buttonReset?: string
+    buttonSet?: string
+    disabledInc?: boolean
+    disabledReset?: boolean
+    stepNumber?: number
+    count?: number
+    startValue?: number
+    className?: string
 }
 
-export const Button: React.FC<ButtonPropsType> = (
-    {count, stepNumber, startValue, incCountCallback, resetCountCallback, buttonInc, buttonReset,
-        disabledInc, disabledReset}) => {
+export const Button: React.FC<ButtonPropsType> = ({...restProps}) => {
 
     return (
-        <div className={s.buttonCont}>
-            <button className={`${s.button} + ${s.incCount}`} onClick={()=>incCountCallback(count, stepNumber)}
-                    disabled={disabledInc}>{buttonInc}</button>
-            <button className={`${s.button} + ${s.resetCount}`} onClick={()=>resetCountCallback(count ,startValue)}
-                    disabled={disabledReset}>{buttonReset}</button>
+        <div>
+            <button {...restProps}/>
         </div>
     )
 }

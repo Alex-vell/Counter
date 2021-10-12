@@ -1,0 +1,49 @@
+
+.valueCont{
+    padding: 10px;
+    color: white;
+}
+
+.valueName{
+    padding: 10px;
+    color: white;
+}
+
+.input{
+    margin-left: 5px;
+    background-color: #eee;
+    vertical-align: top;
+    outline: none;
+    display: inline-block;
+    border: 1px solid black;
+    font-size: 14px;
+    border-radius: 3px;
+}
+.errorInput{
+    margin-left: 5px;
+    background-color: #eee;
+    vertical-align: top;
+    outline: none;
+    display: inline-block;
+    border: 1px solid red;
+    font-size: 14px;
+    border-radius: 3px;
+}
+
+.buttonCont{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.button {
+    margin-left: 10px;
+    width: 100px;
+    height: 30px;
+    background-color: lightslategray;
+    border-radius: 10px;
+    border-color: lightslategray;
+    color: white;
+}
+
