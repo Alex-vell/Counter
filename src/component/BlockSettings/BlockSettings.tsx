@@ -3,58 +3,50 @@ import s from './BlockSettings.module.css'
 import {Button} from "../Button/Button";
 import {initialState} from "../../state/count-reducer";
 
+
 type BlockSettingsType = {
     startValue: number
     maxValue: number
-    setMaxValue: (maxValue: number) => void
-    setStartValue: (startValue: number) => void
-    resetCountCallback: (count: number, startValue: number) => void
-    count: number
-    setCountCallback: (startValue: number) => void
+    saveValueCallback: () => void
+    onChangeSettingsValueCallback: (e: ChangeEvent<HTMLInputElement>) => void
+    errorValue: boolean
+    disabledSet: boolean
 }
 
 
 export const BlockSettings: React.FC<BlockSettingsType> = (
     {
-        startValue, maxValue, setMaxValue, count, setCountCallback,
-        setStartValue, resetCountCallback
+        startValue, maxValue, saveValueCallback,
+        onChangeSettingsValueCallback, errorValue, disabledSet
     }) => {
 
-    const maxValueEnterHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setMaxValue(e.currentTarget.valueAsNumber)
+    const {titleOneInput, titleSecondInput, buttonSet} = initialState
 
-    }
-    const startValueEnterHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setStartValue(e.currentTarget.valueAsNumber)
-    }
-
-    const saveValueHandler = () => {
-        setCountCallback(startValue)
-        resetCountCallback(count, startValue)
-    }
-
-    let disabledAll = startValue >= maxValue || startValue < 0
-    let inputClass = disabledAll ? s.errorInput : s.input
+    let inputClass = errorValue ? s.errorInput : s.input
+    let disabledButton = `${s.disabled}`
+    let buttonSetClass = disabledSet ? disabledButton : `${s.button}`
 
     return (
         <div className={s.blockCont}>
             <div className={s.valueCont}>
-                <div className={s.valueName}>
-                    maxValue:
-                    <span className={inputClass}>
-              <input type='number' value={maxValue} onChange={maxValueEnterHandler}/>
+                <div className={s.control}>
+                    <span className={s.valueName}>{titleOneInput}</span>
+                    <span>
+              <input className={inputClass} type='number' value={maxValue} onChange={onChangeSettingsValueCallback}
+                     name={'maxValue'}/>
           </span>
                 </div>
-                <div className={s.valueName}>
-                    startValue:
-                    <span className={inputClass}>
-              <input type='number' value={startValue} onChange={startValueEnterHandler}/>
+                <div className={s.control}>
+                    <span className={s.valueName}>{titleSecondInput}</span>
+                    <span>
+              <input className={inputClass} type='number' value={startValue} onChange={onChangeSettingsValueCallback}
+                     name={'startValue'}/>
           </span>
                 </div>
             </div>
             <div className={s.buttonCont}>
-                <Button className={s.button} onClick={saveValueHandler} disabled={disabledAll}>
-                    {initialState.buttonSet}
+                <Button className={buttonSetClass} onClick={saveValueCallback} disabled={disabledSet}>
+                    {buttonSet}
                 </Button>
             </div>
         </div>

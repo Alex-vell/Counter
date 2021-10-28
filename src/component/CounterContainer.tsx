@@ -1,13 +1,13 @@
-import React from 'react'
+import React, {ChangeEvent} from 'react'
 import {Counter} from './Counter'
 import s from './Counter.module.css'
 import {BlockSettings} from "./BlockSettings/BlockSettings";
 import {
-    IncCountAC,
-    ResetCountAC,
-    SetMaxValueAC,
-    SetStartValueAC,
-    SetCountAC
+    incCountAC,
+    resetCountAC,
+    setMaxValueAC,
+    setStartValueAC,
+    setCountAC, setSettingsModeAC, setErrorValueAC
 } from "../state/count-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "../state/store";
@@ -15,85 +15,90 @@ import {AppStateType} from "../state/store";
 
 export const CounterContainer = () => {
 
-// redux , useSelect
     const count = useSelector<AppStateType, number>(state => state.counter.count)
     const maxValue = useSelector<AppStateType, number>(state => state.counter.maxValue)
     const startValue = useSelector<AppStateType, number>(state => state.counter.startValue)
+    const errorValue = useSelector<AppStateType, boolean>(state => state.counter.errorValue)
+    const settingsMode = useSelector<AppStateType, boolean>(state => state.counter.settingsMode)
     const dispatch = useDispatch()
 
-    const incCount = (count: number, stepNumber: number) => {
-        dispatch(IncCountAC(count, stepNumber))
+    const onIncCount = (count: number, stepNumber: number) => {
+        dispatch(incCountAC(count, stepNumber))
     }
-    const resetCount = (count: number, startValue: number) => {
-        dispatch(ResetCountAC(count, startValue))
+    const onResetCount = (count: number, startValue: number) => {
+        dispatch(resetCountAC(count, startValue))
     }
 
 
-    // Block Settings
     const setMaxValue = (maxValue: number) => {
-        dispatch(SetMaxValueAC(maxValue))
+        dispatch(setMaxValueAC(maxValue))
     }
     const setStartValue = (startValue: number) => {
-        dispatch(SetStartValueAC(startValue))
+        dispatch(setStartValueAC(startValue))
     }
     const setCount = (startValue: number) => {
-        dispatch(SetCountAC(startValue))
+        dispatch(setCountAC(startValue))
     }
 
 
-    // useReducer
-    //const [count, dispatchAddCount] = useReducer(countReducer, startValue)
-
-    /*const incCount = (count: number, stepNumber: number) => {
-        //dispatchCount(IncCountAC(count, stepNumber))
-        //setAddCount(count + stepNumber)
-        dispatchAddCount(IncCountAC(count, stepNumber))
+    const onError = () => {
+        if (startValue >= maxValue || startValue < 0) {
+            dispatch(setErrorValueAC(true))
+        } else {
+            dispatch(setErrorValueAC(false))
+        }
     }
-    const resetCount = (count: number, startValue: number) => {
-        //setAddCount(startValue)
-        dispatchAddCount(ResetCountAC(count, startValue))
+    onError()
+
+
+    const onChangeSettingsValue = (e: ChangeEvent<HTMLInputElement>) => {
+        dispatch(setSettingsModeAC(true))
+
+        let currentValue = Number(e.currentTarget.value)
+        switch (e.currentTarget.name) {
+            case 'startValue':
+                setStartValue(currentValue);
+                break;
+            case 'maxValue':
+                setMaxValue(currentValue);
+                break;
+        }
     }
-    const setCount = () => {
-        dispatchAddCount(SetValueCountAC())
-    }*/
 
+    const saveValue = () => {
+        dispatch(setSettingsModeAC(false))
+        setCount(startValue)
+        onResetCount(count, startValue)
 
-    // useState
-
-    /*const [count, setAddCount] = useState<number>(startValue)
-
-    const incCount = (count: number, stepNumber: number) => {
-        setAddCount(count + stepNumber)
     }
-    const resetCount = (count: number, startValue: number) => {
-        setAddCount(startValue)
-    }*/
 
 
-    let disabledInc = count >= maxValue
-    let disabledReset = count === startValue
+    let disabledInc = count >= maxValue || settingsMode || errorValue
+    let disabledReset = count === startValue || settingsMode || errorValue
+    let disabledSet = errorValue || !settingsMode
 
 
-    return (
-        <div className={s.counter}>
-            <div className={s.appCont}>
+    return (<>
+            <div className={s.countCount}>
                 <Counter count={count}
                          maxValue={maxValue}
                          startValue={startValue}
-                         incCountCallback={incCount}
-                         resetCountCallback={resetCount}
+                         onIncCountCallback={onIncCount}
+                         onResetCountCallback={onResetCount}
                          disabledInc={disabledInc}
-                         disabledReset={disabledReset}/>
+                         disabledReset={disabledReset}
+                         onChangeSettingsValueCallback={onChangeSettingsValue}
+                         settingsMode={settingsMode}
+                         errorValue={errorValue}/>
             </div>
-            <div className={s.blockCont}>
+            <div className={s.blockSettCont}>
                 <BlockSettings startValue={startValue}
                                maxValue={maxValue}
-                               setMaxValue={setMaxValue}
-                               setStartValue={setStartValue}
-                               resetCountCallback={resetCount}
-                               count={count}
-                               setCountCallback={setCount}/>
+                               saveValueCallback={saveValue}
+                               onChangeSettingsValueCallback={onChangeSettingsValue}
+                               errorValue={errorValue}
+                               disabledSet={disabledSet}/>
             </div>
-        </div>
+        </>
     )
 }

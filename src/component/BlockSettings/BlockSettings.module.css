@@ -1,49 +1,79 @@
 
-.valueCont{
+.valueCont {
     padding: 10px;
     color: white;
+    background-color: #222222;
 }
 
-.valueName{
+.control {
     padding: 10px;
-    color: white;
+    background-color: #222222;
 }
 
-.input{
-    margin-left: 5px;
-    background-color: #eee;
+.valueName {
+    color: #99ffb9;
+    font-size: 22px;
+}
+
+.input {
+    width: 100px;
+    height: 33px;
+    margin-left: 30px;
+    padding-left: 10px;
+    background-color: #222222;
     vertical-align: top;
     outline: none;
     display: inline-block;
-    border: 1px solid black;
-    font-size: 14px;
-    border-radius: 3px;
+    border: 3px solid #4B0082;
+    font-size: 22px;
+    border-radius: 10px;
+    color: #99ffb9;
 }
-.errorInput{
-    margin-left: 5px;
-    background-color: #eee;
+
+.errorInput {
+
+    width: 100px;
+    height: 33px;
+    margin-left: 30px;
+    padding-left: 10px;
+    background-color: #222222;
     vertical-align: top;
     outline: none;
     display: inline-block;
-    border: 1px solid red;
-    font-size: 14px;
-    border-radius: 3px;
+    border: 3px solid #8B0000;
+    font-size: 22px;
+    border-radius: 10px;
+    color: #99ffb9;
 }
 
-.buttonCont{
+.buttonCont {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 20px;
+    background-color: #222222;
 }
 
 .button {
     margin-left: 10px;
     width: 100px;
     height: 30px;
-    background-color: lightslategray;
+    background-color: #4B0082;
     border-radius: 10px;
-    border-color: lightslategray;
-    color: white;
+    border-color: #4B0082;
+    color: #99ffb9;
+    font-size: 22px;
+}
+
+.disabled {
+    margin-left: 10px;
+    width: 100px;
+    height: 30px;
+    background-color: #4B0082;
+    border-radius: 10px;
+    border-color: #4B0082;
+    color: #99ffb9;
+    font-size: 22px;
+    opacity: 0.3;
 }
 

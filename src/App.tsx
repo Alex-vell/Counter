@@ -4,7 +4,7 @@ import {CounterContainer} from "./component/CounterContainer";
 
 const App = () => {
     return (
-        <div className={s.app}>
+        <div className={s.appCounter}>
             <CounterContainer/>
         </div>
     );

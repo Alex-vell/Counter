@@ -1,27 +1,40 @@
-.app{
+
+.appCounter {
+    height: 100vh;
     display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-content: stretch;
     align-items: center;
-    justify-content: center
+    background-color: #222222;
 }
 
-.appCont {
-    margin: 100px;
-    width: 300px;
-    height: 220px;
-    background-color: #2e4b5cfe;
-    border-radius: 10px;
-    border: 2px solid;
-    border-color: lightslategray;
-}
-.blockCont{
 
-    margin: 100px;
+.countCount {
+    margin: 50px;
     width: 300px;
-    height: 220px;
-    background-color: #2e4b5cfe;
-    border-radius: 10px;
-    border: 2px solid;
-    border-color: lightslategray;
+    height: 250px;
+    background-color: #222222;
+    border-radius: 30px;
+    border: 5px solid #4B0082;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+.blockSettCont {
+
+    margin: 50px;
+    width: 300px;
+    height: 250px;
+    background-color: #222222;
+    border-radius: 30px;
+    border: 5px solid #4B0082;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .item {
@@ -31,9 +44,10 @@
     margin-left: 40px;
     padding: 10px;
     text-align: center;
-    font-size: 80px;
-    background-color: lightslategray;
+    font-size: 70px;
     border-radius: 10px;
+    background-color: #4B0082;
+    color: #99ffb9;
 }
 
 .itemMax {
@@ -42,30 +56,47 @@
 
 .buttonCont {
     display: flex;
+    flex-direction: row;
+    width: 220px;
     padding: 10px;
-    margin-left: 26px;
+    margin-left: 27px;
+    background-color: #222222;
 }
 
 .button {
     margin-left: 10px;
     width: 100px;
     height: 30px;
-    background-color: lightslategray;
+    font-size: 22px;
     border-radius: 10px;
-    border-color: lightslategray;
+    border-color: #4B0082;
+    background-color: #4B0082;
+    color: #99ffb9;
 }
 
-.incorrectValue{
-    color: red;
+.disabled {
+    margin-left: 10px;
+    width: 100px;
+    height: 30px;
+    font-size: 22px;
+    border-radius: 10px;
+    border-color: #4B0082;
+    background-color: #4B0082;
+    opacity: 0.3;
+    color: #99ffb9;
+}
+
+.incorrectValue {
+    color: #99ffb9;
     width: 200px;
     height: 100px;
     margin: 20px;
     margin-left: 40px;
     padding: 10px;
     text-align: center;
-    font-size: 20px;
-    background-color: lightslategray;
+    font-size: 40px;
     border-radius: 10px;
+    background-color: #4B0082;
 }
 
 .incCount {
@@ -75,3 +106,6 @@
 .resetCount {
 
 }
+
+
+
