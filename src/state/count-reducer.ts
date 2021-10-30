@@ -1,10 +1,31 @@
+import {Dispatch} from "redux";
+import {AppStateType} from "./store";
+
 export type InitialStateType = typeof initialState
 
+// export type InitialStateType = {
+//     counter: number
+//     startValue: number
+//     maxValue: number
+//     stepNumber: number
+//     maxNumberCounter: number
+//     settingsMode: boolean
+//     errorValue: boolean
+//     buttonInc: string
+//     buttonReset: string
+//     buttonSet: string
+//     textSettingsMode: string
+//     titleOneInput: string
+//     titleSecondInput: string
+//     textCountError: string
+// }
+
 export const initialState = {
-    count: 0,
+    counter: 0,
     startValue: 0,
     maxValue: 5,
     stepNumber: 1,
+    maxNumberCounter: 10000,
     settingsMode: false,
     errorValue: false,
     buttonInc: 'inc',
@@ -17,26 +38,27 @@ export const initialState = {
 }
 
 
-type ActionType = IncCountActionType | ResetCountActionType | SetValueCountActionType
-    | SetMaxValueActionType | SetStartValueActionType | SetSettingsModeActionType
-    | SetCountErrorActionType
+// type ActionType = IncCountActionType | ResetCountActionType | SetMaxValueActionType
+//     | SetStartValueActionType | SetSettingsModeActionType | SetCountErrorActionType
+
+type ActionType = ReturnType<typeof incCountAC>
+    | ReturnType<typeof resetCountAC>
+    | ReturnType<typeof setMaxValueAC>
+    | ReturnType<typeof setStartValueAC>
+    | ReturnType<typeof setSettingsModeAC>
+    | ReturnType<typeof setErrorValueAC>
 
 export const countReducer = (state: InitialStateType = initialState, action: ActionType): InitialStateType => {
     switch (action.type) {
         case 'INC-COUNT': {
             return {
-                ...state, count: state.count + state.stepNumber
+                ...state, counter: action.counter + state.stepNumber
             }
         }
         case "RESET-COUNT": {
             return {
-                ...state, count: state.startValue
+                ...state, counter: state.startValue
             }
-        }
-        case 'SET-COUNT': {
-            return {
-                ...state, startValue: action.startValue
-            }// 'enter values and press Set'
         }
         case 'SET-MAX-VALUE': {
             return {
@@ -48,14 +70,14 @@ export const countReducer = (state: InitialStateType = initialState, action: Act
                 ...state, startValue: action.startValue
             }
         }
-        case 'SET-SETTINGS-MODE': {
-            return {
-                ...state, settingsMode: action.settingsMode
-            }
-        }
         case 'SET-ERROR-VALUE': {
             return {
                 ...state, errorValue: action.errorValue
+            }
+        }
+        case 'SET-SETTINGS-MODE': {
+            return {
+                ...state, settingsMode: action.settingsMode
             }
         }
         default:
@@ -63,34 +85,28 @@ export const countReducer = (state: InitialStateType = initialState, action: Act
     }
 }
 
-export type IncCountActionType = ReturnType<typeof incCountAC>
-export const incCountAC = (count: number, stepNumber: number) => {
+// Action Creator
+
+//export type IncCountActionType = ReturnType<typeof incCountAC>
+export const incCountAC = (counter: number, stepNumber: number) => {
     return {
         type: 'INC-COUNT',
-        count,
+        counter,
         stepNumber
 
     } as const
 }
 
-export type ResetCountActionType = ReturnType<typeof resetCountAC>
-export const resetCountAC = (count: number, startValue: number) => {
+//export type ResetCountActionType = ReturnType<typeof resetCountAC>
+export const resetCountAC = (counter: number, startValue: number) => {
     return {
         type: 'RESET-COUNT',
-        count,
+        counter,
         startValue
     } as const
 }
 
-export type SetValueCountActionType = ReturnType<typeof setCountAC>
-export const setCountAC = (startValue: number) => {
-    return {
-        type: 'SET-COUNT',
-        startValue
-    } as const
-}
-
-export type SetMaxValueActionType = ReturnType<typeof setMaxValueAC>
+//export type SetMaxValueActionType = ReturnType<typeof setMaxValueAC>
 export const setMaxValueAC = (maxValue: number) => {
     return {
         type: 'SET-MAX-VALUE',
@@ -99,7 +115,7 @@ export const setMaxValueAC = (maxValue: number) => {
     } as const
 }
 
-export type SetStartValueActionType = ReturnType<typeof setStartValueAC>
+//export type SetStartValueActionType = ReturnType<typeof setStartValueAC>
 export const setStartValueAC = (startValue: number) => {
     return {
         type: 'SET-START-VALUE',
@@ -108,7 +124,7 @@ export const setStartValueAC = (startValue: number) => {
     } as const
 }
 
-export type SetSettingsModeActionType = ReturnType<typeof setSettingsModeAC>
+//export type SetSettingsModeActionType = ReturnType<typeof setSettingsModeAC>
 export const setSettingsModeAC = (settingsMode: boolean) => {
     return {
         type: 'SET-SETTINGS-MODE',
@@ -117,11 +133,36 @@ export const setSettingsModeAC = (settingsMode: boolean) => {
     } as const
 }
 
-export type SetCountErrorActionType = ReturnType<typeof setErrorValueAC>
+//export type SetCountErrorActionType = ReturnType<typeof setErrorValueAC>
 export const setErrorValueAC = (errorValue: boolean) => {
     return {
         type: 'SET-ERROR-VALUE',
         errorValue,
 
     } as const
+}
+
+// Thunk creator
+
+export const saveValueFromLS = () => {
+    return (dispatch: Dispatch, getState: () => AppStateType) => {
+        let currentMaxValue = getState().counter.maxValue
+        let currentStartValue = getState().counter.startValue
+        localStorage.setItem('maxValue', JSON.stringify(currentMaxValue))
+        localStorage.setItem('startValue', JSON.stringify(currentStartValue))
+    }
+}
+
+export const setValueFromLSThunkCreator = (counter: number) => {
+    return (dispatch: Dispatch) => {
+        let startValueAsString = localStorage.getItem('startValue')
+        let maxValueAsString = localStorage.getItem('maxValue')
+        if (startValueAsString && maxValueAsString) {
+            let newStartValue = JSON.parse(startValueAsString)
+            let newMaxValue = JSON.parse(maxValueAsString)
+            dispatch(setStartValueAC(newStartValue))
+            dispatch(setMaxValueAC(newMaxValue))
+            dispatch(resetCountAC(counter, newStartValue))
+        }
+    }
 }

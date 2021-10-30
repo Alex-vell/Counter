@@ -20,11 +20,12 @@ export const BlockSettings: React.FC<BlockSettingsType> = (
         onChangeSettingsValueCallback, errorValue, disabledSet
     }) => {
 
-    const {titleOneInput, titleSecondInput, buttonSet} = initialState
+    // const {startValue, maxValue, saveValueCallback,
+    //     onChangeSettingsValueCallback, errorValue, disabledSet} = props
 
-    let inputClass = errorValue ? s.errorInput : s.input
-    let disabledButton = `${s.disabled}`
-    let buttonSetClass = disabledSet ? disabledButton : `${s.button}`
+    const {titleOneInput, titleSecondInput, buttonSet} = initialState
+    const inputClass = errorValue ? s.errorInput : s.input
+    const buttonSetClass = disabledSet ? `${s.disabled}` : `${s.button}`
 
     return (
         <div className={s.blockCont}>

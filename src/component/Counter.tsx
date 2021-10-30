@@ -1,45 +1,45 @@
-import React, {ChangeEvent} from 'react'
+import React from 'react'
 import s from './Counter.module.css'
 import {Button} from "./Button/Button";
 import {initialState} from "../state/count-reducer";
 
 type PropsType = {
-    count: number
+    counter: number
     maxValue: number
     startValue: number
     onIncCountCallback: (count: number, stepNumber: number) => void
     onResetCountCallback: (count: number, startValue: number) => void
     disabledInc: boolean
     disabledReset: boolean
-    onChangeSettingsValueCallback: (e: ChangeEvent<HTMLInputElement>) => void
     settingsMode: boolean
     errorValue: boolean
 }
 
 export const Counter: React.FC<PropsType> = (
     {
-        count, maxValue, startValue,
-        onIncCountCallback, disabledInc,
-        onResetCountCallback, disabledReset,
-        onChangeSettingsValueCallback, settingsMode, errorValue,
-        ...restProps
+        counter, maxValue, startValue, onIncCountCallback, disabledInc,
+        onResetCountCallback, disabledReset, settingsMode, errorValue
     }) => {
+
+    // const {counter, maxValue, startValue, onIncCountCallback, disabledInc,
+    //     onResetCountCallback, disabledReset, settingsMode, errorValue} = props
 
     const {stepNumber, textCountError, textSettingsMode, buttonInc, buttonReset} = initialState
 
-    const onIncCountHandler = () => { onIncCountCallback(count, stepNumber) }
-    const onResetCountHandler = () => { onResetCountCallback(count, startValue) }
+    const onIncCountHandler = () => onIncCountCallback(counter, stepNumber)
 
-    const displayCounter = () => settingsMode ? (errorValue ? textCountError : textSettingsMode) : count
+    const onResetCountHandler = () => onResetCountCallback(counter, startValue)
+
+    const displayCounter = () => settingsMode ? (errorValue ? textCountError : textSettingsMode) : counter
+
 
     //className
 
-    let disabledButton = `${s.disabled}`
-    let maxClass = count === maxValue ? `${s.item} + ${s.itemMax}` : s.item
-    let classNameButtonInc = disabledInc ? disabledButton : `${s.button} + ${s.incCount}`
-    let classNameButtonReset = disabledReset ? disabledButton : `${s.button} + ${s.resetCount}`
-    let incorrectValue = `${s.incorrectValue}`
-    let displayCounterClass = errorValue || settingsMode ? incorrectValue : maxClass
+    const counterClass = counter === maxValue ? `${s.item} ${s.itemMax}` : s.item
+    const classNameButtonInc = disabledInc ? `${s.disabled}` : `${s.button} ${s.incCount}`
+    const classNameButtonReset = disabledReset ? `${s.disabled}` : `${s.button} ${s.resetCount}`
+    const displayCounterClass = (errorValue || settingsMode) ? `${s.incorrectValue}` : counterClass
+
 
     return (
         <div>
@@ -48,12 +48,12 @@ export const Counter: React.FC<PropsType> = (
 
                 <Button className={classNameButtonInc} disabled={disabledInc}
                         stepNumber={stepNumber}
-                        count={count} onClick={onIncCountHandler}>
+                        counter={counter} onClick={onIncCountHandler}>
                     {buttonInc}
                 </Button>
 
                 <Button className={classNameButtonReset}
-                        disabled={disabledReset} count={count} startValue={startValue}
+                        disabled={disabledReset} counter={counter} startValue={startValue}
                         onClick={onResetCountHandler}>
                     {buttonReset}
                 </Button>
