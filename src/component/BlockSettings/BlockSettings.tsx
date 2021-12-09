@@ -19,9 +19,7 @@ export const BlockSettings: React.FC<BlockSettingsType> = (
         startValue, maxValue, saveValueCallback,
         onChangeSettingsValueCallback, errorValue, disabledSet
     }) => {
-
-    // const {startValue, maxValue, saveValueCallback,
-    //     onChangeSettingsValueCallback, errorValue, disabledSet} = props
+    
 
     const {titleOneInput, titleSecondInput, buttonSet} = initialState
     const inputClass = errorValue ? s.errorInput : s.input
